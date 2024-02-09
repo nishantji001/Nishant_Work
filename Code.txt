@@ -1,0 +1,126 @@
+class PatternChaser {
+    String PatternChaser(String str) {
+        String pattern = null;
+        int patternCount;
+
+        for (int i = 0; i < str.length() - 1; i++) {
+            for (int j = i + 1; j < str.length(); j++) {
+                String subStr = str.substring(i, j + 1);
+                patternCount = 1;
+
+                for (int k = 0; k < str.length() - subStr.length() + 1; k++) {
+                    if (k == i) continue;
+                    if (subStr.equals(str.substring(k, k + subStr.length()))) {
+                        patternCount++;
+                    }
+                }
+
+                if (patternCount >= 2 && (pattern == null || pattern.length() < subStr.length())) {
+                    pattern = subStr;
+                }
+            }
+        }
+
+
+        return pattern != null ? "yes " + pattern : "no null";
+
+    }
+
+    public static void main(String[] args) {
+        // keep this function call here
+        Scanner s = new Scanner(System.in);
+        PatternChaser c = new PatternChaser();
+        System.out.print(c.PatternChaser(s.nextLine()));
+    }
+}
+
+
+
+
+
+
+
+
+
+
+using System;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+
+class MainClass
+{
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(PatternChaser("da2kr32a2")); // Output: yes a2
+        Console.WriteLine(PatternChaser("sskfssbbb9bbb")); // Output: yes bbb
+        Console.WriteLine(PatternChaser("123224")); // Output: no null
+    }
+
+    public static string PatternChaser(string str)
+    {
+        string longestPattern = null;
+        int longestLength = 0;
+
+        for (int i = 0; i < str.Length - 1; i++)
+        {
+            for (int j = i + 1; j < str.Length; j++)
+            {
+                string pattern = str.Substring(i, j - i + 1);
+                Regex regex = new Regex(pattern);
+                MatchCollection matches = regex.Matches(str);
+
+                if (matches.Count >= 2 && pattern.Length > longestLength)
+                {
+                    longestPattern = pattern;
+                    longestLength = pattern.Length;
+                }
+            }
+        }
+
+        return longestPattern != null ? $"yes {longestPattern}" : "no null";
+    }
+}
+
+
+
+
+
+
+using System;
+
+class MainClass
+{
+    // __define-ocg__
+    public static void Main(string[] args)
+    {
+        Console.WriteLine(TrappingWater(new int[] { 3, 0, 0, 2, 0, 4 })); // Output: 10
+        Console.WriteLine(TrappingWater(new int[] { 1, 2, 1, 2 })); // Output: 1
+        Console.WriteLine(TrappingWater(new int[] { 0, 2, 4, 0, 2, 1, 2, 6 })); // Output: 11
+    }
+
+    public static int TrappingWater(int[] arr)
+    {
+        int n = arr.Length;
+
+        if (n <= 2)
+            return 0;
+
+        int[] leftMax = new int[n];
+        int[] rightMax = new int[n];
+
+        leftMax[0] = arr[0];
+        for (int i = 1; i < n; i++)
+            leftMax[i] = Math.Max(leftMax[i - 1], arr[i]);
+
+        rightMax[n - 1] = arr[n - 1];
+        for (int i = n - 2; i >= 0; i--)
+            rightMax[i] = Math.Max(rightMax[i + 1], arr[i]);
+
+        int trappedWater = 0;
+        for (int i = 0; i < n; i++)
+            trappedWater += Math.Min(leftMax[i], rightMax[i]) - arr[i];
+
+        return trappedWater;
+    }
+}
+
